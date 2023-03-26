@@ -1220,24 +1220,24 @@ contains
     end function gammaP
 
 
-    function iniRead(this, iLUN, sIniFileName) result(iRetCode)
+    function iniRead(this, sIniFileName) result(iRetCode)
 
         ! Routine arguments
         class(IniFile), intent(inout)    :: this
-        integer, intent(in)                :: iLUN
         character(len=*), intent(in)    :: sIniFileName
         integer                            :: iRetCode
 
         ! Locals
-        integer                :: iErrCode
-        character(len=256)    :: sBuffer
-        character(len=256)    :: sCurrentSection
-        character(len=256)    :: sCurSection
-        integer                :: iNumLines
-        integer                :: iLine
-        integer                :: iPos
-        integer                :: iNumKeys
-        integer                :: i
+        integer                 :: iLUN
+        integer                 :: iErrCode
+        character(len=256)      :: sBuffer
+        character(len=256)      :: sCurrentSection
+        character(len=256)      :: sCurSection
+        integer                 :: iNumLines
+        integer                 :: iLine
+        integer                 :: iPos
+        integer                 :: iNumKeys
+        integer                 :: i
 
         ! Assume success (will falsify on failure)
         iRetCode = 0
@@ -1249,7 +1249,7 @@ contains
         if(allocated(this % svValue)) deallocate(this % svValue)
 
         ! Now, count lines excluding comments
-        open(iLUN, file=sIniFileName, status='old', action='read', iostat=iErrCode)
+        open(newunit=iLUN, file=sIniFileName, status='old', action='read', iostat=iErrCode)
         if(iErrCode /= 0) then
             iRetCode = 1
             return
@@ -4902,7 +4902,7 @@ contains
     ! Clausius-Clapeyron formula. This routine is the recommended
     ! replacement of E_SAT.
     !
-    !     Input: T = air temperature (âC)
+    !     Input: T = air temperature (âˆžC)
     !
     !     Output: ESAT = saturation vapor pression (hPa)
     !
@@ -4949,7 +4949,7 @@ contains
 
 
     ! Compute the derivative of the saturation vapor pressure multiplied
-    ! by P/0.622; the input temperature is in âK.
+    ! by P/0.622; the input temperature is in âˆžK.
     FUNCTION D_E_SAT(T) RESULT(DEsat)
 
         ! Routine arguments
@@ -15728,7 +15728,6 @@ contains
                 end if
             end if
         end do
-        print *, '-6-'
 
         ! Perfection status
         tEc % averagingTime = iAveragingTime
